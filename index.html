@@ -1,0 +1,104 @@
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script src="script.js"></script>
+<link rel="stylesheet" href="styles.css">
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<div class="container">
+    <h1>Click the filter icon <small>(<i class="glyphicon glyphicon-filter"></i>)</small></h1>
+    	<div class="row">
+			
+			<!-- <div class="col-md-6"> -->
+				<div class=""></div>
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">Tasks</h3>
+						<div class="pull-right">
+							<span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
+								<i class="glyphicon glyphicon-filter"></i>
+							</span>
+						</div>
+					</div>
+					<div class="panel-body">
+						<input type="text" class="form-control" id="task-table-filter" data-action="filter" data-filters="#task-table" placeholder="Filter Tasks" />
+					</div>
+					<table class="table table-hover" id="task-table">
+						<thead>
+							<tr>
+								<th>&nbsp;</th>
+								<th>Task</th>
+								<th>Assignee</th>
+								<th>Status</th>
+								<th>Task</th>
+								<th>Done</th>
+								<th>Status</th>
+								<th>Task</th>
+								<th>Status</th>
+								<th>Status</th>
+								<th>Task</th>
+								<th>Status</th>
+						
+							</tr>
+						</thead>
+						<tbody>
+
+							<script>
+
+
+// 	fetch('http://10.10.10.179:1337/Res')
+//   .then((response) => response.json())
+//   .then((data) => console.log(data));
+
+  	var result;
+
+	$.ajax({
+	type: "GET",
+	url: 'http://10.10.10.172:1337/collections',
+	datatype: "json",
+	async: false,
+	success: function(data){
+		result = data;
+		console.log("Inside ajax: "+result);                
+	}
+	});
+
+	console.log("Outside ajax: "+result);  // fires only after the ajax request is completed
+
+	var okay_keys= ["name","regex","link1","C","Python","Java","Javascript","CSharp","Php","Golang","Shell","HTML","Python"];
+
+
+	for (var i = 0; i < result.length; i++){
+		// document.write("id " + i);
+		document.write("<tr>");
+		document.write("<td> " + i + "</td>");
+		var obj = result[i];
+		for (var key in obj){
+			var value = obj[key];
+			if (okay_keys.includes(key)) {
+				document.write("<td> " + value + "</td>");
+			}
+			
+			//document.write("<br> - " + key + ": " + value);
+		}
+		document.write("</tr>");
+	}
+
+
+								</script>
+
+							<tr>
+								<td>1</td>
+								<td>Site Wireframes</td>
+								<td>John Smith</td>
+								<td>in progress</td>
+							</tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
