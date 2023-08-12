@@ -60,5 +60,71 @@ $(function () {
       $panel.find(".panel-body input").focus();
     }
   });
-  $('[data-toggle="tooltip"]').tooltip();
+  // $('[data-toggle="tooltip"]').tooltip();
+});
+
+
+
+
+
+
+
+const okay_keys = ["name", "regex"];
+const baseUrl = 'http://10.10.1.86:1337/cos/';
+const maxRequests = 334;
+
+async function fetchData(url) {
+  return new Promise((resolve, reject) => {
+      $.ajax({
+          type: "GET",
+          url: url,
+          dataType: "json",
+          success: resolve,
+          error: reject
+      });
+  });
+}
+
+async function fetchAndProcessAllData() {
+  const dataPromises = [];
+
+  for (let i = 1; i <= maxRequests; i++) {
+      const url = baseUrl + i;
+      dataPromises.push(fetchData(url));
+  }
+
+  try {
+      const dataArray = await Promise.all(dataPromises);
+      processAndDisplayData(dataArray);
+  } catch (error) {
+      console.error("Error fetching or processing data:", error);
+  }
+}
+
+function processAndDisplayData(dataArray) {
+  const tableBody = document.getElementById("data-table-body");
+
+  for (let i = 0; i < dataArray.length; i++) {
+      const obj = dataArray[i];
+      const row = document.createElement("tr");
+
+      const cell = document.createElement("td");
+      cell.textContent = i;
+      row.appendChild(cell);
+
+      for (const key in obj) {
+          const value = obj[key];
+          if (okay_keys.includes(key)) {
+              const cell = document.createElement("td");
+              cell.textContent = value;
+              row.appendChild(cell);
+          }
+      }
+
+      tableBody.appendChild(row);
+  }
+}
+
+$(document).ready(() => {
+  fetchAndProcessAllData();
 });
